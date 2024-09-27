@@ -9,7 +9,7 @@ export default defineContentScript({
 
     // Set up a MutationObserver to detect when the messaging area is loaded
     const observer = new MutationObserver(() => {
-      const messageInput = document.querySelector('.msg-form__msg-content-container .msg-form__contenteditable');
+      const messageInput = document.querySelector('.msg-thread .msg-form__msg-content-container--scrollable');
 
       if (messageInput) {
         console.log('Message input found.');
@@ -17,9 +17,10 @@ export default defineContentScript({
         // Create a container for the React app
         const container = document.createElement('div');
         container.id = 'react-extension-container'; // Set an ID for the container
-        container.style.position = 'relative'; // Change to relative to position within the contenteditable
+        container.style.position = 'absolute'; // Change to relative to position within the contenteditable
         container.style.zIndex = '10000'; // Ensure it's above other elements
-        container.style.width = '100%'; // Make it full width of the input area
+      container.style.right = '0'; // Adjust based on your layout
+      container.style.bottom = '0'; // Adjust based on your layout
 
         // Clear any existing container to avoid duplicates
         
