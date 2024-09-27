@@ -1,5 +1,5 @@
-// src/Modal.tsx
 import React from 'react';
+import { GenerateIcon } from './Icons';
 
 interface ModalProps {
   isOpen: boolean;
@@ -15,19 +15,16 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
       onClick={onClose}
     >
       <div
-        className="bg-white p-6 rounded shadow-lg"
+        className="bg-white p-8 rounded shadow-lg"
         onClick={(e) => e.stopPropagation()}
-        style={{
-          maxWidth: '500px',
-          background: "green",
-        
-
-        }}
       >
-        <h2 className="text-lg">This is a Modal</h2>
-        <button onClick={onClose} className="mt-4 bg-red-500 text-white px-4 py-2 rounded">
-          Close
+        <input className='border-[#a29c9c72] border-none outline-none w-80' type="text" />
+        <div className='flex justify-end mt-8'>
+        <button onClick={onClose} className="">
+          <GenerateIcon/>
         </button>
+        </div>
+        
       </div>
     </div>
   );
