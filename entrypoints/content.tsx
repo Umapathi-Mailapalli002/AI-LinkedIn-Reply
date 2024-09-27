@@ -1,44 +1,57 @@
 import React from 'react';
-import { createRoot } from 'react-dom/client'; // Import createRoot
-import App from './overlays.content/App'; // Adjust the import path as necessary
+import { createRoot } from 'react-dom/client';
+import App from './overlays.content/App';
 
 export default defineContentScript({
   matches: ['https://www.linkedin.com/messaging/thread/*'],
   main() {
     console.log('Hello content.');
 
-    // Set up a MutationObserver to detect when the messaging area is loaded
-    const observer = new MutationObserver(() => {
-      const messageInput = document.querySelector('.msg-thread .msg-form__msg-content-container--scrollable');
+    function renderReactApp(messageInput: HTMLElement) {
+      const container = document.createElement('div');
+      container.id = 'react-extension-container';
+      container.style.position = 'absolute';
+      container.style.zIndex = '10000';
+      container.style.right = '0';
+      container.style.bottom = '0';
 
-      if (messageInput) {
-        console.log('Message input found.');
+      // Append the container to the message input
+      messageInput.appendChild(container);
 
-        // Create a container for the React app
-        const container = document.createElement('div');
-        container.id = 'react-extension-container'; // Set an ID for the container
-        container.style.position = 'absolute'; // Change to relative to position within the contenteditable
-        container.style.zIndex = '10000'; // Ensure it's above other elements
-      container.style.right = '0'; // Adjust based on your layout
-      container.style.bottom = '0'; // Adjust based on your layout
-
-        // Clear any existing container to avoid duplicates
-        
-
-        // Append the container inside the message input
-        messageInput.appendChild(container);
-
-        // Use createRoot to render the React app
-        const root = createRoot(container);
-        root.render(<App />); // Render the App component
-
-        observer.disconnect(); // Stop observing after adding the app
+      // Check if the container is valid
+      if (container) {
+        const root = createRoot(container); // Ensure container exists
+        root.render(<App />);
+        console.log('React app rendered.');
       } else {
-        console.log('Message input not found. Continuing to observe...');
+        console.error('Failed to create container for React app.');
       }
-    });
+    }
 
-    // Start observing the body for changes
-    observer.observe(document.body, { childList: true, subtree: true });
+    function observeMessageInput() {
+      const observer = new MutationObserver(() => {
+        const messageInput = document.querySelector('.msg-thread .msg-form__msg-content-container--scrollable') as HTMLElement;
+
+        if (messageInput) {
+          console.log('Message input found, rendering React app.');
+          renderReactApp(messageInput);
+          observer.disconnect(); // Stop observing after rendering
+        } else {
+          console.log('Message input not found. Continuing to observe...');
+        }
+      });
+
+      // Start observing the body for changes
+      observer.observe(document.body, { childList: true, subtree: true });
+    }
+
+    // Check if the message input is already present
+    const initialCheck = document.querySelector('.msg-thread .msg-form__msg-content-container--scrollable') as HTMLElement;
+    if (initialCheck) {
+      console.log('Message input found on initial check, rendering React app.');
+      renderReactApp(initialCheck);
+    } else {
+      observeMessageInput(); // Start observing if not found
+    }
   },
 });
