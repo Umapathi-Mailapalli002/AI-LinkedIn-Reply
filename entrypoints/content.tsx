@@ -5,7 +5,7 @@ export default defineContentScript({
 
     // Set up a MutationObserver to detect when the messaging area is loaded
     const observer = new MutationObserver(() => {
-      const messageInput = document.querySelector('.msg-form__msg-content-container .msg-form__contenteditable p').textContent;
+      const messageInput = document.querySelector('.msg-form__msg-content-container .msg-form__contenteditable p')?.textContent;
       if (messageInput) {
         console.log("Message input found.",messageInput);
          // Create the icon once the input is available
