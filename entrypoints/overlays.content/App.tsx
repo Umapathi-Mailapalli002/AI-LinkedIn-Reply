@@ -31,7 +31,7 @@ const App: React.FC = () => {
     <Modal isOpen={isModalOpen} onClose={toggleModal} />  
       </div>
    
-      <div className='cursor-pointer' onClick={toggleModal}>
+      <div className='cursor-pointer ' onClick={toggleModal}>
       <AIIcon />
       </div>
     </>
