@@ -34,7 +34,10 @@ export default defineContentScript({
 
         if (messageInput) {
           console.log('Message input found, rendering React app.');
-          renderReactApp(messageInput);
+          const isFocused = messageInput.getAttribute('data-artdeco-is-focused');
+          if (isFocused) {
+            renderReactApp(messageInput);
+          }
           observer.disconnect(); // Stop observing after rendering
         } else {
           console.log('Message input not found. Continuing to observe...');

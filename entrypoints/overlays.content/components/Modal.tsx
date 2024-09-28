@@ -80,7 +80,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
           </button>) :
           (<div className='flex'>
             <button onClick={handleInsert} className='mr-4'><InserIcon /></button>
-            <button className='cursor-not-allowed'><REGenerateIcon /></button>
+            <button disabled={true} className='cursor-not-allowed'><REGenerateIcon /></button>
           </div>)}
         </div>
 
