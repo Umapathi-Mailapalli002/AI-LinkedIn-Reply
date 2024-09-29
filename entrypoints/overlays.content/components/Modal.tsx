@@ -27,6 +27,10 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
 
   if (!isOpen) return null;
 
+  const handleInputFocus = (event) => {
+    event.stopPropagation(); // Prevent the focus event from bubbling up
+  };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
   }
@@ -71,7 +75,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
         </div>)}
 
         <div className=''>
-          <input value={input} className='rounded-md hover:outline-0 shadow-transparent' onChange={handleInputChange} placeholder='Your prompt' type="text" />
+          <input value={input} onFocus={handleInputFocus} className='rounded-md hover:outline-0 shadow-transparent' onChange={handleInputChange} placeholder='Your prompt' type="text" />
         </div>
 
         <div className='flex justify-end mt-6'>

@@ -5,7 +5,9 @@ import App from './overlays.content/App';
 export default defineContentScript({
   matches: ['https://www.linkedin.com/messaging/thread/*'],
   main() {
-    console.log('Hello content.');
+    console.log('Content script loaded.');
+
+    let root: ReturnType<typeof createRoot> | null = null;
 
     function renderReactApp(messageInput: HTMLElement) {
       const container = document.createElement('div');
@@ -14,47 +16,63 @@ export default defineContentScript({
       container.style.zIndex = '10000';
       container.style.right = '0';
       container.style.bottom = '0';
-
-      // Append the container to the message input
       messageInput.appendChild(container);
 
-      // Check if the container is valid
-      if (container) {
-        const root = createRoot(container); // Ensure container exists
-        root.render(<App />);
-        console.log('React app rendered.');
-      } else {
-        console.error('Failed to create container for React app.');
+      root = createRoot(container);
+      root.render(<App />);
+      console.log('React app rendered.');
+    }
+
+    function unmountReactApp() {
+      if (root) {
+        root.unmount();
+        root = null;
+        console.log('React app unmounted.');
       }
     }
 
-    function observeMessageInput() {
+    function observeMessageInput(messageInput: HTMLElement) {
       const observer = new MutationObserver(() => {
-        const messageInput = document.querySelector('.msg-thread .msg-form__msg-content-container--scrollable') as HTMLElement;
+        const isFocused = messageInput.getAttribute('data-artdeco-is-focused') === 'true';
+        console.log('Focus attribute status:', isFocused ? 'focused' : 'not focused');
 
-        if (messageInput) {
-          console.log('Message input found, rendering React app.');
-          const isFocused = messageInput.getAttribute('data-artdeco-is-focused');
-          if (isFocused) {
-            renderReactApp(messageInput);
-          }
-          observer.disconnect(); // Stop observing after rendering
-        } else {
-          console.log('Message input not found. Continuing to observe...');
+        if (isFocused && !root) {
+          console.log('Input focused, rendering React app.');
+          renderReactApp(messageInput);
+        } else if (!isFocused && root) {
+          console.log('Input unfocused, unmounting React app.');
+          unmountReactApp();
         }
       });
 
-      // Start observing the body for changes
-      observer.observe(document.body, { childList: true, subtree: true });
+      // Start observing for attribute changes
+      observer.observe(messageInput, { attributes: true });
+      console.log('Started observing message input for attribute changes.');
     }
 
-    // Check if the message input is already present
-    const initialCheck = document.querySelector('.msg-thread .msg-form__msg-content-container--scrollable') as HTMLElement;
-    if (initialCheck) {
-      console.log('Message input found on initial check, rendering React app.');
-      renderReactApp(initialCheck);
-    } else {
-      observeMessageInput(); // Start observing if not found
+    const checkForInput = () => {
+      const messageInput = document.querySelector('.msg-form__contenteditable') as HTMLElement;
+      if (messageInput) {
+        console.log('Message input found, starting observation.');
+        observeMessageInput(messageInput);
+        return true;
+      }
+      console.log('Message input not found.');
+      return false;
+    };
+
+    // Observe the body for changes to find the input
+    const bodyObserver = new MutationObserver(() => {
+      if (checkForInput()) {
+        bodyObserver.disconnect(); // Stop observing body after finding the input
+      }
+    });
+
+    bodyObserver.observe(document.body, { childList: true, subtree: true });
+
+    // Initial check for the message input
+    if (!checkForInput()) {
+      console.log('No input found initially. Observing body for changes...');
     }
   },
 });
