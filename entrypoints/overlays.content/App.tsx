@@ -1,29 +1,29 @@
 import React, { useState } from 'react';
 import {AIIcon} from "./components/Icons";
-import './style.css'
 import Modal from "./components/Modal";
+import './style.css'
 const App: React.FC = () => {
-  function observeMessageInput() {
-    const observer = new MutationObserver(() => {
-      const messageInput = document.querySelector('.msg-form__msg-content-container .msg-form__contenteditable p') as HTMLElement;
+  const [isFocused, setIsFocused] = useState<boolean>(false);
+  useEffect(() => {
+    const messageInput = document.querySelector('.msg-thread .msg-form__msg-content-container--scrollable') as HTMLElement;
 
-      if (messageInput) {
-        console.log('Message input found, from app component.', messageInput);
-        
-        observer.disconnect(); // Stop observing after rendering
-      } else {
-        console.log('Message input not found. Continuing to observe...');
-      }
-    });
+    if (messageInput) {
+      const observer = new MutationObserver(() => {
+        const focused = messageInput.getAttribute('data-artdeco-is-focused') === 'true';
+        console.log('Focus attribute status:', focused ? 'focused' : 'not focused');
 
-    // Start observing the body for changes
-    observer.observe(document.body, { childList: true, subtree: true });
-  }
-  observeMessageInput()
+        setIsFocused(focused);
+      });
+
+      observer.observe(messageInput, { attributes: true });
+
+      return () => observer.disconnect(); // Cleanup observer on unmount
+    }
+  }, []);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const toggleModal = () => {
-    setIsModalOpen(!isModalOpen);
+    setIsModalOpen((prev) => !prev);
   };
   return (
     <>
