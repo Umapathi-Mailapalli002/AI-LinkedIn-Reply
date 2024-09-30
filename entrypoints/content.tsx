@@ -1,13 +1,13 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import App from './overlays.content/App';
+import App from './overlays.content/App'; // Adjust the import path if necessary
 
 export default defineContentScript({
   matches: ['https://www.linkedin.com/messaging/thread/*'],
   main() {
     console.log('Hello content.');
 
-    function renderReactApp(messageInput: HTMLElement) {
+    function renderReactApp(messageInput) {
       const container = document.createElement('div');
       container.id = 'react-extension-container';
       container.style.position = 'absolute';
@@ -18,19 +18,15 @@ export default defineContentScript({
       // Append the container to the message input
       messageInput.appendChild(container);
 
-      // Check if the container is valid
-      if (container) {
-        const root = createRoot(container); // Ensure container exists
-        root.render(<App />);
-        console.log('React app rendered.');
-      } else {
-        console.error('Failed to create container for React app.');
-      }
+      // Render the React app
+      const root = createRoot(container);
+      root.render(<App />);
+      console.log('React app rendered.');
     }
 
     function observeMessageInput() {
       const observer = new MutationObserver(() => {
-        const messageInput = document.querySelector('.msg-thread .msg-form__msg-content-container--scrollable') as HTMLElement;
+        const messageInput = document.querySelector('.msg-thread .msg-form__msg-content-container--scrollable');
 
         if (messageInput) {
           console.log('Message input found, rendering React app.');
@@ -46,7 +42,7 @@ export default defineContentScript({
     }
 
     // Check if the message input is already present
-    const initialCheck = document.querySelector('.msg-thread .msg-form__msg-content-container--scrollable') as HTMLElement;
+    const initialCheck = document.querySelector('.msg-thread .msg-form__msg-content-container--scrollable');
     if (initialCheck) {
       console.log('Message input found on initial check, rendering React app.');
       renderReactApp(initialCheck);

@@ -3,37 +3,46 @@ import {AIIcon} from "./components/Icons";
 import Modal from "./components/Modal";
 import './style.css'
 const App: React.FC = () => {
-  const [isFocused, setIsFocused] = useState<boolean>(false);
-  useEffect(() => {
-    const messageInput = document.querySelector('.msg-thread .msg-form__msg-content-container--scrollable') as HTMLElement;
-
-    if (messageInput) {
-      const observer = new MutationObserver(() => {
-        const focused = messageInput.getAttribute('data-artdeco-is-focused') === 'true';
-        console.log('Focus attribute status:', focused ? 'focused' : 'not focused');
-
-        setIsFocused(focused);
-      });
-
-      observer.observe(messageInput, { attributes: true });
-
-      return () => observer.disconnect(); // Cleanup observer on unmount
-    }
-  }, []);
+  const [isActive, setIsActive] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const toggleModal = () => {
+    setIsActive(true);
     setIsModalOpen((prev) => !prev);
+    
   };
+
+  useEffect(() => {
+    const checkActiveClass = () => {
+      const messageContainer = document.querySelector('.msg-form__msg-content-container');
+      if (messageContainer) {
+        setIsActive(messageContainer.classList.contains('msg-form__msg-content-container--is-active'));
+      }
+    };
+
+    // Initial check
+    checkActiveClass();
+
+    // Set up a mutation observer to listen for class changes
+    const observer = new MutationObserver(checkActiveClass);
+    const messageContainer = document.querySelector('.msg-form__msg-content-container');
+    if (messageContainer) {
+      observer.observe(messageContainer, { attributes: true });
+    }
+
+    return () => {
+      observer.disconnect(); // Cleanup observer on component unmount
+    };
+  }, []);
   return (
     <>
     <div className="bg-black">
     <Modal isOpen={isModalOpen} onClose={toggleModal} />  
       </div>
    
-      <div className='cursor-pointer ' onClick={toggleModal}>
+      {isActive && (<div className='cursor-pointer ' onClick={toggleModal}>
       <AIIcon />
-      </div>
+      </div>)}
     </>
   );
 }

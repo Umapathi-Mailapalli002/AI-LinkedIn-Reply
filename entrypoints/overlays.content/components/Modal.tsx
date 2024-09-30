@@ -48,11 +48,17 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   };
   
   const handleInsert = () => {
+    //response text
     const responseText = "Thank you for the opportunity! If you have any more questions or if there's anything else I can help you with, feel free to ask.";
+    //messageInpput accessing
     const messageInput = document.querySelector('.msg-form__msg-content-container .msg-form__contenteditable p') as HTMLElement;
+    //placeholder of linkedin message field 
     const messagePlaceholder = document.querySelector(".msg-form__msg-content-container .msg-form__placeholder") as HTMLElement;
+    // send button which is disabled we can make it enable
+const sendButton = document.querySelector('.msg-form__send-button');
     //to remove the placeholder
     messagePlaceholder?.classList.remove('msg-form__placeholder')
+    sendButton?.removeAttribute('disabled')
     if (messageInput) {
       messageInput.innerText = responseText;
     // Close the modal after inserting text
@@ -109,7 +115,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
               <button onClick={handleInsert} className='mr-4'>
                 <InserIcon />
               </button>
-              <button disabled={true} className='cursor-not-allowed'>
+              <button disabled className='cursor-not-allowed'>
                 <REGenerateIcon />
               </button>
             </div>
