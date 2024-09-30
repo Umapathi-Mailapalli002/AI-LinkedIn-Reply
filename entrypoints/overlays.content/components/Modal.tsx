@@ -50,7 +50,9 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   const handleInsert = () => {
     const responseText = "Thank you for the opportunity! If you have any more questions or if there's anything else I can help you with, feel free to ask.";
     const messageInput = document.querySelector('.msg-form__msg-content-container .msg-form__contenteditable p') as HTMLElement;
-    
+    const messagePlaceholder = document.querySelector(".msg-form__msg-content-container .msg-form__placeholder") as HTMLElement;
+    //to remove the placeholder
+    messagePlaceholder?.classList.remove('msg-form__placeholder')
     if (messageInput) {
       messageInput.innerText = responseText;
     // Close the modal after inserting text
