@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {AIIcon} from "./components/Icons";
 import Modal from "./components/Modal";
 import './style.css'
 const App: React.FC = () => {
   const [isActive, setIsActive] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const toggleModal = () => {
     setIsModalOpen((prev) => !prev);
     
@@ -38,10 +37,9 @@ const App: React.FC = () => {
     <div className="bg-black">
     <Modal isOpen={isModalOpen} onClose={toggleModal} />  
       </div>
-   
-      {isActive && (<div className='cursor-pointer ' onClick={toggleModal}>
-      <AIIcon />
-      </div>)}
+      <div onClick={toggleModal} className='cursor-pointer' >
+      {isActive && (<AIIcon />)}
+      </div>
     </>
   );
 }
