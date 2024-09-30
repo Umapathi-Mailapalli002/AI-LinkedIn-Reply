@@ -7,7 +7,6 @@ const App: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const toggleModal = () => {
-    setIsActive(true);
     setIsModalOpen((prev) => !prev);
     
   };
