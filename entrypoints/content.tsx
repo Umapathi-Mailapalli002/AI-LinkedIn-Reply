@@ -7,7 +7,7 @@ export default defineContentScript({
   main() {
     console.log('Hello content.');
 
-    function renderReactApp(messageInput) {
+    function renderReactApp(messageInput :Element) {
       const container = document.createElement('div');
       container.id = 'react-extension-container';
       container.style.position = 'absolute';

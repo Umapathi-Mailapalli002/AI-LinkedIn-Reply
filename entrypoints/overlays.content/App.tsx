@@ -6,6 +6,8 @@ const App: React.FC = () => {
   const [isActive, setIsActive] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const toggleModal = () => {
+    setIsActive(true)
+    alert("icon is clicked")
     setIsModalOpen((prev) => !prev);
     
   };
@@ -37,7 +39,7 @@ const App: React.FC = () => {
     <div className="bg-black">
     <Modal isOpen={isModalOpen} onClose={toggleModal} />  
       </div>
-      <div onClick={toggleModal} className='cursor-pointer' >
+      <div onClickCapture={toggleModal} className='cursor-pointer' >
       {isActive && (<AIIcon />)}
       </div>
     </>
