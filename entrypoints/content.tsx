@@ -49,7 +49,7 @@ export default defineContentScript({
         renderReactApp(messageInput);
       } else {
         console.log('Message input not found on initial check. Retrying in 500ms...');
-        setTimeout(initialCheck, 500); // Retry after 500ms
+        setTimeout(initialCheck, 1000); // Retry after 500ms
       }
     };
 
