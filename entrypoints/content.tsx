@@ -5,11 +5,11 @@ import App from './overlays.content/App'; // Adjust the import path if necessary
 export default defineContentScript({
   matches: ['https://www.linkedin.com/messaging/thread/*'],
   main() {
-    console.log('Hello content.');
+    console.log('Hello from LinkedIn AI Reply.');
 
     function renderReactApp(messageInput :Element) {
       const container = document.createElement('div');
-      container.id = 'react-extension-container';
+      container.id = 'linkedin-ai-reply';
       container.style.position = 'absolute';
       container.style.zIndex = '10000';
       container.style.right = '0';

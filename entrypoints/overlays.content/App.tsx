@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import {AIIcon} from "./components/Icons";
+import { AIIcon } from "./components/Icons";
 import Modal from "./components/Modal";
 import './style.css'
 const App: React.FC = () => {
@@ -7,12 +7,14 @@ const App: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const toggleModal = () => {
     setIsModalOpen((prev) => !prev);
-    
+
   };
 
   useEffect(() => {
     const checkActiveClass = () => {
       const messageContainer = document.querySelector('.msg-form__msg-content-container');
+
+      //displaying the icon on this basis of active class
       if (messageContainer) {
         setIsActive(messageContainer.classList.contains('msg-form__msg-content-container--is-active'));
       }
@@ -34,11 +36,11 @@ const App: React.FC = () => {
   }, []);
   return (
     <>
-    <div className="bg-black">
-    <Modal isOpen={isModalOpen} onClose={toggleModal} /> 
-          </div>
+      <div className="bg-black">
+        <Modal isOpen={isModalOpen} onClose={toggleModal} />
+      </div>
       <div onMouseDown={toggleModal} className='cursor-pointer' >
-      {isActive && (<AIIcon />)}
+        {isActive && (<AIIcon />)}
       </div>
     </>
   );

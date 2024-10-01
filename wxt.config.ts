@@ -9,5 +9,7 @@ export default defineConfig({
       "scripting",
       "activeTab"
     ],
+    name: "linkedin-ai-reply",
+    description: "ai generated reply for linkedin messages, now paste the message and get deserve reply! "
   },
 });

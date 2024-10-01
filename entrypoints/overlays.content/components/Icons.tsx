@@ -1,5 +1,5 @@
 import React from 'react'
-
+//Ai icon
 const AIIcon: React.FC = () => {
   return (
     <div className=''>
@@ -30,6 +30,8 @@ const AIIcon: React.FC = () => {
     </div>
   )
 }
+
+//generate icon
 const GenerateIcon: React.FC = () => {
   return (
     <div className=''>
@@ -41,6 +43,8 @@ const GenerateIcon: React.FC = () => {
     </div>
   )
 }
+
+//regenerate icon
 const REGenerateIcon: React.FC = () => {
   return (
     <div className=''>
@@ -53,6 +57,7 @@ const REGenerateIcon: React.FC = () => {
   )
 }
 
+//insert icon
 const InserIcon: React.FC = () => {
   return (
     <div className=''>

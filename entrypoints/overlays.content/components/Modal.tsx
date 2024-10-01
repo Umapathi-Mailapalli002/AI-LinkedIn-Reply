@@ -29,10 +29,12 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
     event.stopPropagation(); // Prevent the focus event from bubbling up
   };
 
+  //handling the input change in modal
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
   };
 
+  //handle the generate button 
   const handleGenerateRes = () => {
     if (input.trim() !== "") {
       setIsReqSend(true);
@@ -46,18 +48,25 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
     }
   };
 
+  //handling insert button
   const handleInsert = () => {
+
     //response text
     const responseText = "Thank you for the opportunity! If you have any more questions or if there's anything else I can help you with, feel free to ask.";
+
     //messageInpput accessing
     const messageInput = document.querySelector('.msg-form__msg-content-container .msg-form__contenteditable p') as HTMLElement;
+
     //placeholder of linkedin message field 
     const messagePlaceholder = document.querySelector(".msg-form__msg-content-container .msg-form__placeholder") as HTMLElement;
+
     // send button which is disabled we can make it enable
     const sendButton = document.querySelector('.msg-form__send-button');
+
     //to remove the placeholder
     messagePlaceholder?.classList.remove('msg-form__placeholder')
     sendButton?.removeAttribute('disabled')
+    
     if (!loading && messageInput) {
       messageInput.innerText = responseText;
       // Create a focus event
@@ -66,7 +75,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
     // Dispatch the focus event
     messageInput.dispatchEvent(focusEvent);
 
-    // Focus the message input explicitly (optional)
+    // Focus the message input explicitly
     messageInput.focus();
   
       
@@ -103,7 +112,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
         )}
 
         <div>
-          <input style={{borderRadius: "8px", height: "40px", border: "0", borderBlockColor: "red"}}
+          <input style={{borderRadius: "8px", height: "40px"}}
             value={input}
             onFocus={handleInputFocus}
             className=''
@@ -134,6 +143,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   );
 };
 
+//Loading component
 const Loading: React.FC = () => {
   return (
     <>
