@@ -41,13 +41,19 @@ export default defineContentScript({
       observer.observe(document.body, { childList: true, subtree: true });
     }
 
-    // Check if the message input is already present
-    const initialCheck = document.querySelector('.msg-thread .msg-form__msg-content-container--scrollable');
-    if (initialCheck) {
-      console.log('Message input found on initial check, rendering React app.');
-      renderReactApp(initialCheck);
-    } else {
-      observeMessageInput(); // Start observing if not found
-    }
+    // Function to check for the message input with a delay
+    const initialCheck = () => {
+      const messageInput = document.querySelector('.msg-thread .msg-form__msg-content-container--scrollable');
+      if (messageInput) {
+        console.log('Message input found on initial check, rendering React app.');
+        renderReactApp(messageInput);
+      } else {
+        console.log('Message input not found on initial check. Retrying in 500ms...');
+        setTimeout(initialCheck, 500); // Retry after 500ms
+      }
+    };
+
+    // Start the initial check
+    initialCheck();
   },
 });
