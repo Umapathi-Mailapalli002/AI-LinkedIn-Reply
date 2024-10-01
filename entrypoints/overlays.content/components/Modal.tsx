@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { GenerateIcon, REGenerateIcon, InserIcon } from './Icons';
-
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -43,10 +42,10 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
       setTimeout(() => {
         setIsRes(true);
         setLoading(false);
-      }, 3000);
+      }, 2000);
     }
   };
-  
+
   const handleInsert = () => {
     //response text
     const responseText = "Thank you for the opportunity! If you have any more questions or if there's anything else I can help you with, feel free to ask.";
@@ -55,16 +54,25 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
     //placeholder of linkedin message field 
     const messagePlaceholder = document.querySelector(".msg-form__msg-content-container .msg-form__placeholder") as HTMLElement;
     // send button which is disabled we can make it enable
-const sendButton = document.querySelector('.msg-form__send-button');
+    const sendButton = document.querySelector('.msg-form__send-button');
     //to remove the placeholder
     messagePlaceholder?.classList.remove('msg-form__placeholder')
     sendButton?.removeAttribute('disabled')
-    if (messageInput) {
+    if (!loading && messageInput) {
       messageInput.innerText = responseText;
-    // Close the modal after inserting text
+      // Create a focus event
+    const focusEvent = new Event('focus', { bubbles: true });
+    
+    // Dispatch the focus event
+    messageInput.dispatchEvent(focusEvent);
 
-    onClose();
+    // Focus the message input explicitly (optional)
+    messageInput.focus();
+  
+      
     }
+    // Close the modal after inserting text
+    onClose();
   };
 
   const response: string = "Thank you for the opportunity! If you have any more questions or if there's anything else I can help you with, feel free to ask.";
@@ -95,10 +103,10 @@ const sendButton = document.querySelector('.msg-form__send-button');
         )}
 
         <div>
-          <input
+          <input style={{borderRadius: "8px", height: "40px", border: "0", borderBlockColor: "red"}}
             value={input}
             onFocus={handleInputFocus}
-            className='rounded-md hover:outline-0 shadow-transparent'
+            className=''
             onChange={handleInputChange}
             placeholder='Your prompt'
             type="text"
