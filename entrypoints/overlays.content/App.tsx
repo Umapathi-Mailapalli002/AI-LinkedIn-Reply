@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { AIIcon } from "./components/Icons";
 import Modal from "./components/Modal";
 import './style.css'

@@ -13,6 +13,12 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
+    const lastMsg = document.getElementsByClassName('msg-s-event-listitem__body')
+    const messages = Array.from(lastMsg).map((msg) => (msg as HTMLElement).innerText);
+    console.log({"message": messages[messages.length-1]});
+    if (isOpen) {
+      setInput(messages[messages.length-1]);
+    }
     if (!isOpen) {
       // Reset states when the modal closes
       setInput("");
